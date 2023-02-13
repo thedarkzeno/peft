@@ -700,7 +700,7 @@ class PeftModelForSeq2SeqLM(PeftModel):
             )
             return self.base_model(inputs_embeds=inputs_embeds, decoder_inputs_embeds=decoder_inputs_embeds, **kwargs)
 
-    def generate(self, **kwargs):
+    def generate(self, *args, **kwargs):
         if not isinstance(self.peft_config, PromptLearningConfig):
             return self.base_model.generate(**kwargs)
         else:
@@ -716,7 +716,7 @@ class PeftModelForSeq2SeqLM(PeftModel):
                 kwargs["token_type_ids"] = None
 
             if self.peft_config.peft_type == PeftType.PREFIX_TUNING:
-                return self.base_model.generate(**kwargs)
+                return self.base_model.generate(*args, **kwargs)
             else:
                 raise NotImplementedError
 
